@@ -1,0 +1,105 @@
+syntax = "proto3";
+
+/// START ENUMS
+enum RenderingService {
+  EAGLE_3D = 0;
+}
+
+enum SceneStatus {
+  PLANNED = 0;
+  IN_PROGRESS = 1;
+  COMPLETED = 2;
+}
+
+enum LinkCodeUsage {
+  PUBLIC = 0;
+  PERSONAL = 1;
+}
+/// END ENUMS
+
+/// START MESSAGES
+message TimeInSeconds {
+  int64 value = 1;
+}
+
+message Lifecycle {
+  TimeInSeconds creation_ts = 1;
+  TimeInSeconds last_modified_ts = 2;
+  optional TimeInSeconds ttl = 3;
+}
+
+message Name {
+  string first_name = 1;
+  string last_name = 2;
+}
+
+message Contact {
+  optional string email = 1;
+  optional string phone_number = 2;
+}
+
+message Address {
+  string line_1 = 1;
+  optional string line_2 = 2;
+  optional string line_3 = 3;
+  string city = 4;
+  string post_code = 5;
+  string state_province_county = 6;
+  string country_code = 7;
+}
+
+message BusinessRecord {
+  string name = 1;
+  Contact contact = 2;
+  optional Address address = 3;
+  Lifecycle lifecycle = 4;
+  optional string key = 5;
+}
+
+message RenderingRecord {
+  RenderingService rendering = 1;
+  string path = 2;
+  Lifecycle lifecycle = 3;
+  optional string key = 4;
+}
+
+message PropertyRecord {
+  string name = 1;
+  Address address = 2;
+  BusinessRecord builder = 3;
+  Lifecycle lifecycle = 4;
+  optional string key = 5;
+}
+
+message SceneRecord {
+  string name = 1;
+  optional PropertyRecord property = 2;
+  SceneStatus status = 3;
+  optional RenderingRecord rendering = 4;
+  Lifecycle lifecycle = 5;
+  optional string key = 6;
+}
+
+message LinkCodeRecord {
+  optional Name recipient_name = 1;
+  optional BusinessRecord creator = 2;
+  SceneRecord scene = 3;
+  Lifecycle lifecycle = 4;
+  LinkCodeUsage usage = 5;
+  optional string key = 6;
+}
+
+message APIMappingRecord {
+  string name = 1;
+  string url = 2;
+  int32 priority = 3;
+  bool is_active = 4;
+  Lifecycle lifecycle = 5;
+  optional string key = 7;
+}
+
+message Configuration {
+  repeated APIMappingRecord active_api_mappings = 1;
+}
+
+/// END MESSAGES

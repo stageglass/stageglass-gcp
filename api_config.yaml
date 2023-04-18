@@ -1,0 +1,17 @@
+# The configuration schema is defined by the service.proto file.
+# https://github.com/googleapis/googleapis/blob/master/google/api/service.proto
+
+type: google.api.Service
+config_version: 3
+name: "*.apigateway.stageglass-dev.cloud.goog"
+title: API Gateway + Cloud Run gRPC
+apis:
+  - name: Central
+usage:
+  rules:
+  - selector: "*"
+    allow_unregistered_calls: true
+backend:
+  rules:
+    - selector: "*"
+      address: grpcs://stageglass-central-x3c53cgmra-uw.a.run.app
